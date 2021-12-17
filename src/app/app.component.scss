@@ -1,0 +1,60 @@
+:root {
+}
+
+*, html, body, button, input {
+    font-family: 'Arial', sans-serif;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+}
+
+$color: rgb(99, 102, 241);
+
+h1 {
+    color: $color;
+    text-align: center;
+    margin-top: 0;
+}
+
+.mode {
+    padding-top: 5px;
+    padding-right: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    p {
+        font-size: 14px;
+        padding: 10px 15px;
+        color: rgba($color, .8);
+        filter: contrast(150%);
+        text-decoration: underline 0.15em transparent;
+        text-underline-offset: 0.2em;
+        transition: text-decoration-color 500ms;
+        &.activated {
+            text-decoration: underline 0.15em $color;
+           
+        }
+        &.dark {
+            color: rgb(199, 195, 195);
+        }
+    }
+}
+
+.chart {
+    max-width: 800px;
+    width: 90%;
+    margin: auto;
+    color: #506678;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: rgba($color, 0.6) 0px 0px 0px 2px;
+}
+
+.search {
+    width: 250px;
+    margin: 50px auto 70px auto;
+    border-radius: 10px;
+}
+

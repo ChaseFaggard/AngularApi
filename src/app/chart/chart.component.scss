@@ -1,0 +1,22 @@
+$color: rgb(99, 102, 241);
+
+#canvas {
+    height: 0;
+}
+
+.range {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-top: -40px;
+    p {
+        position: relative;
+        padding: 5px;
+        cursor: pointer;
+        &:hover {
+            color: rgba($color, 1)
+        }
+        &.active {
+            color: rgba($color, .8)
+        }
+    }
+}

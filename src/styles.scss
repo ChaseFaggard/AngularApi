@@ -1,1 +1,54 @@
 /* You can add global styles to this file, and also import other style files */
+$color: rgba(99, 102, 241, .8);
+$light:#f7f7f7;
+$dark: rgb(32, 32, 32);
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body .input {
+    border: 2px solid $color;
+    border-right: none;
+    border-radius: 5px;
+    outline: none;
+    box-shadow: none !important;
+    &:focus { }
+    &.light {
+        background: $light;
+    }
+    &.dark {
+        background: $dark;
+        color: $color;
+    }
+}
+
+body .panel {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    margin: auto;
+    &::-webkit-scrollbar {
+        width: 15px;
+        background: $color;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: darken($color, 6%);
+    }
+    &.light {
+        background: $light;
+    }
+    &.dark {
+        background: $dark;
+        border: 1px solid $color;
+        border-top: none;
+        li {
+            color: $color !important;
+            &:hover {
+                background: $dark !important;
+                filter:brightness(140%) !important;
+            }
+        }
+       
+    }
+}

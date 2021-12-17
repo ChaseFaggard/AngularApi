@@ -1,0 +1,10 @@
+
+<canvas id="canvas"></canvas>
+
+<div class="range">
+    <p [ngClass]="{'active': range == Range.YEAR}" (click)="setRange(Range.YEAR)">Y</p>
+    <p [ngClass]="{'active': range == Range.MONTH_6}" (click)="setRange(Range.MONTH_6)">6M</p>
+    <p [ngClass]="{'active': range == Range.MONTH}" (click)="setRange(Range.MONTH)">M</p>
+</div>
+
+<p-chart type="line" [data]="chartData" [options]="options"></p-chart>

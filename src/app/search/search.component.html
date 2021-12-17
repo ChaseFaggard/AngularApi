@@ -1,0 +1,17 @@
+<p-autoComplete 
+    [(ngModel)]="selectedTicker" 
+    [suggestions]="filteredTickers" 
+    (completeMethod)="filterTickers($event)" 
+    field="name" 
+    [dropdown]="true" 
+    (keyup.enter)="submit()" 
+    (keyup)="getTickers()"
+    inputStyleClass="{{checked ? 'input dark' : 'input light'}}"
+    panelStyleClass="{{checked ? 'panel dark' : 'panel light'}}">
+    <ng-template ngFor let-ticker [ngForOf]="tickers" >
+        <div class="">
+            <img src="" />
+            <div>{{ticker.name}}</div>
+        </div>
+    </ng-template>
+</p-autoComplete>
