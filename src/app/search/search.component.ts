@@ -47,9 +47,9 @@ export class SearchComponent implements OnInit {
   }
 
   getTickersData(search:string) {
-    this.api.getTickers(search).then((response:any) => {
+    this.api.getTickers(search).subscribe((response:any) => {
       this.tickers = response
-    }).catch(console.log)
+    })
   }
 
   submit() {
@@ -63,13 +63,13 @@ export class SearchComponent implements OnInit {
         search = this.selectedTicker.ticker
         tickName = this.selectedTicker.name
       }
-      this.api.getStockData(search).then((response:any) => {
+      this.api.getStockData(search).subscribe((response:any) => {
         if(response) {
           this.tickerName.emit(tickName)
           this.updateChart.emit(response)
         }
         else console.log('API Response was null')
-      }).catch(console.log)
+      })
     }
   }
 

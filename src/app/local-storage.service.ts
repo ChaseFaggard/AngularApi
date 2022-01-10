@@ -1,3 +1,5 @@
+/* !! AS OF NOW, THIS SERVICE IS NOT IN USE */
+
 import { Injectable } from '@angular/core';
 
 @Injectable({

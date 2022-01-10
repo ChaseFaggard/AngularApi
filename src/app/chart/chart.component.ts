@@ -52,9 +52,9 @@ export class ChartComponent implements OnInit {
     this.gradient.addColorStop(0.35, this.colors.purple.quarter);
     this.gradient.addColorStop(1, this.colors.purple.zero);
 
-    this.api.getStockData('NBR').then((response:any) => {
+    this.api.getStockData('NBR').subscribe((response:any) => {
       this.setChartData(response)
-    }).catch(console.log)
+    })
 
   }
 
@@ -69,7 +69,7 @@ export class ChartComponent implements OnInit {
     const oneMonthDate = new Date(new Date().getFullYear(), new Date().getMonth() - 1, new Date().getDate())
     const sixMonthDate = new Date(new Date().getFullYear(), new Date().getMonth() - 5, new Date().getDate())
     const oneYearDate = new Date(new Date().getFullYear()-1, new Date().getMonth()-1, new Date().getDate())
-    for(let [i,item] of data.results.entries()) {
+    for(let [i,item] of data.entries()) {
       const date = new Date(item.t)
       let addItem:boolean = false, addLabel:boolean = false
       let label = ''

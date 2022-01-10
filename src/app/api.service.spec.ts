@@ -2,15 +2,64 @@ import { TestBed } from '@angular/core/testing';
 
 import { ApiService } from './api.service';
 
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing'
+import { HttpClient } from '@angular/common/http';
+
+
 describe('ApiService', () => {
-  let service: ApiService;
+  let apiService: ApiService;
+  let httpClient: HttpClient;
+  let httpTestingController: HttpTestingController;
+  let testTickersUrl: string, testStockDataUrl: string
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(ApiService);
+    TestBed.configureTestingModule({
+      imports: [ HttpClientTestingModule ],
+      providers: [ ApiService ]
+    });
+    apiService = TestBed.inject(ApiService);
+    httpClient = TestBed.inject(HttpClient);
+    httpTestingController = TestBed.inject(HttpTestingController);
+
+    testTickersUrl = apiService.getTickersURL('nabors')
+    testStockDataUrl =  apiService.getStockDataURL('NBR')
+  });
+
+
+  afterEach(() => {
+    // After every test, assert that there are no more pending requests.
+    httpTestingController.verify();
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(apiService).toBeTruthy();
   });
+
+  it('Should call getTickers() and return an array of stock tickers', () => {
+    apiService.getTickers('nabors').subscribe(
+      response => { 
+        console.log(response)
+        expect(response).not.toBeUndefined
+        expect(response.length).toEqual(2)
+      }
+    )
+    
+    const req = httpTestingController.expectOne(testTickersUrl)
+    expect(req.request.method).toEqual('GET')
+    req.flush({"ticker":"NBR","name":"Nabors Industries Ltd.","market":"stocks","locale":"us","primary_exchange":"XNYS","type":"CS","active":true,"currency_name":"usd","cik":"0001163739","last_updated_utc":"2021-12-21T00:00:00Z"},{"ticker":"NETC.U","name":"Nabors Energy Transition Corp. Units, each consisting of one share of Class A common stock and one-h","market":"stocks","locale":"us","primary_exchange":"XNYS","type":"UNIT","active":true,"currency_name":"usd","cik":"0001854458","composite_figi":"BBG011C6WC34","share_class_figi":"BBG011C6WCY0","last_updated_utc":"2021-12-21T00:00:00Z"})
+  })
+
+  it('Should call getStockData() and return stock data', () => {
+    apiService.getStockData('NBR').subscribe(
+      response => {
+        console.log(response)
+        expect(response).not.toBeUndefined
+        expect(response.length).toEqual(53)
+      }
+    )
+
+    const req = httpTestingController.expectOne(testStockDataUrl)
+    expect(req.request.method).toEqual('GET')
+    req.flush({"v":1.451641e+06,"vw":66.7939,"o":58.36,"c":68.28,"h":71.65,"l":58.17,"t":1609650000000,"n":25092},{"v":1.849748e+06,"vw":66.9166,"o":66.45,"c":65.14,"h":72.555,"l":63.31,"t":1610254800000,"n":28902},{"v":1.162572e+06,"vw":63.0581,"o":66.51,"c":60.86,"h":68,"l":57.7053,"t":1610859600000,"n":18649},{"v":1.704448e+06,"vw":64.6856,"o":59.6,"c":71.42,"h":71.51,"l":55.01,"t":1611464400000,"n":26103},{"v":1.386531e+06,"vw":74.2254,"o":71.51,"c":78.12,"h":79,"l":67.37,"t":1612069200000,"n":22517},{"v":1.273856e+06,"vw":83.3229,"o":79.23,"c":85.32,"h":88.66,"l":78.81,"t":1612674000000,"n":20954},{"v":834595,"vw":86.9748,"o":87.5,"c":87.47,"h":91.89,"l":80.5,"t":1613278800000,"n":14906},{"v":1.397439e+06,"vw":99.8456,"o":87.24,"c":111.01,"h":112.42,"l":79.27,"t":1613883600000,"n":26820},{"v":1.073928e+06,"vw":114.7105,"o":115.56,"c":126.75,"h":127.46,"l":104.8,"t":1614488400000,"n":24239},{"v":903128,"vw":127.6979,"o":130,"c":129.87,"h":133.61,"l":118.89,"t":1615093200000,"n":20643},{"v":897402,"vw":116.895,"o":130.47,"c":107.77,"h":131.33,"l":103.77,"t":1615698000000,"n":17743},{"v":917419,"vw":95.7929,"o":108.92,"c":99.05,"h":109,"l":85.2043,"t":1616299200000,"n":20203},{"v":504881,"vw":93.8431,"o":96.38,"c":98.79,"h":99,"l":89.01,"t":1616904000000,"n":11139},{"v":727957,"vw":92.7831,"o":98.49,"c":88.59,"h":98.77,"l":88.3,"t":1617508800000,"n":15091},{"v":626399,"vw":88.423,"o":90.65,"c":89.18,"h":94.7409,"l":81.65,"t":1618113600000,"n":13103},{"v":517237,"vw":85.1846,"o":89.34,"c":84.89,"h":92.4807,"l":80.25,"t":1618718400000,"n":10560},{"v":975041,"vw":86.1886,"o":85.24,"c":80.85,"h":93.7,"l":80.175,"t":1619323200000,"n":18526},{"v":1.427459e+06,"vw":87.1032,"o":83.75,"c":99.04,"h":99.89,"l":78.13,"t":1619928000000,"n":23186},{"v":938759,"vw":97.7026,"o":101,"c":99.48,"h":106.66,"l":89.01,"t":1620532800000,"n":18405},{"v":471837,"vw":97.6495,"o":97.77,"c":97.41,"h":104.09,"l":92.7281,"t":1621137600000,"n":9835},{"v":880512,"vw":97.3704,"o":98.01,"c":93.62,"h":100.96,"l":92.5,"t":1621742400000,"n":15645},{"v":1.338762e+06,"vw":115.2891,"o":97.74,"c":121.13,"h":125.41,"l":96.865,"t":1622347200000,"n":25467},{"v":664193,"vw":114.3914,"o":121.21,"c":117.33,"h":121.62,"l":110.39,"t":1622952000000,"n":13851},{"v":1.329985e+06,"vw":120.1115,"o":118.42,"c":116.01,"h":130.25,"l":113.2,"t":1623556800000,"n":24742},{"v":941382,"vw":119.0069,"o":116.65,"c":115.71,"h":123.72,"l":115.52,"t":1624161600000,"n":20943},{"v":740244,"vw":114.5998,"o":115,"c":117.75,"h":120.95,"l":106.661,"t":1624766400000,"n":15854},{"v":565486,"vw":107.855,"o":117.58,"c":108.04,"h":118.11,"l":101.07,"t":1625371200000,"n":12486},{"v":743717,"vw":98.5059,"o":105.6,"c":89.47,"h":109.17,"l":86.33,"t":1625976000000,"n":15399},{"v":738393,"vw":87.4567,"o":84.03,"c":87.24,"h":94.67,"l":82.35,"t":1626580800000,"n":14869},{"v":799964,"vw":88.9222,"o":87.34,"c":87.51,"h":94.55,"l":84.47,"t":1627185600000,"n":13543},{"v":762984,"vw":83.4453,"o":88.23,"c":80.86,"h":93.82,"l":75.345,"t":1627790400000,"n":16045},{"v":484225,"vw":79.434,"o":78.51,"c":76.87,"h":82.7,"l":76.5,"t":1628395200000,"n":12557},{"v":644159,"vw":70.1315,"o":75,"c":67.26,"h":75.2,"l":65.58,"t":1629000000000,"n":15528},{"v":638683,"vw":76.8973,"o":70.35,"c":84.98,"h":85.8791,"l":69.98,"t":1629604800000,"n":14429},{"v":485985,"vw":84.4541,"o":86.77,"c":83.33,"h":87.89,"l":81.693,"t":1630209600000,"n":14042},{"v":431955,"vw":84.9104,"o":82.17,"c":85.07,"h":87.975,"l":80.3459,"t":1630814400000,"n":12487},{"v":1.020004e+06,"vw":84.6699,"o":86.62,"c":82.77,"h":89.77,"l":81.2957,"t":1631419200000,"n":18409},{"v":559812,"vw":82.4531,"o":78.26,"c":89.97,"h":90.9,"l":75.5,"t":1632024000000,"n":16469},{"v":758644,"vw":97.0737,"o":92,"c":103.73,"h":105.25,"l":91.4801,"t":1632628800000,"n":19086},{"v":921099,"vw":106.8552,"o":105.97,"c":110.82,"h":112.75,"l":98.945,"t":1633233600000,"n":20882},{"v":665418,"vw":117.0593,"o":114.68,"c":120.68,"h":123.18,"l":110.195,"t":1633838400000,"n":15780},{"v":590636,"vw":123.6198,"o":123.25,"c":120.6,"h":127,"l":118.78,"t":1634443200000,"n":14912},{"v":833490,"vw":113.6162,"o":123.6,"c":102.5,"h":126.3,"l":100.995,"t":1635048000000,"n":21342},{"v":598205,"vw":102.512,"o":104.62,"c":102.55,"h":107.4899,"l":98.76,"t":1635652800000,"n":15931},{"v":615021,"vw":102.5404,"o":103.97,"c":96.67,"h":107.5025,"l":95.5842,"t":1636257600000,"n":14756},{"v":696400,"vw":90.3705,"o":96.42,"c":83.88,"h":96.68,"l":82.65,"t":1636866000000,"n":17730},{"v":499747,"vw":87.1639,"o":84.19,"c":84.02,"h":93,"l":80.5,"t":1637470800000,"n":12292},{"v":948708,"vw":80.4254,"o":88.62,"c":79.03,"h":92.78,"l":72.46,"t":1638075600000,"n":19987},{"v":640339,"vw":90.553,"o":80.97,"c":97.44,"h":97.88,"l":77.49,"t":1638680400000,"n":16683},{"v":749840,"vw":86.2003,"o":95.01,"c":83.11,"h":95.01,"l":82,"t":1639285200000,"n":17693},{"v":321257,"vw":84.5984,"o":79.63,"c":86.74,"h":89.41,"l":77.11,"t":1639890000000,"n":9598},{"v":350837,"vw":84.3675,"o":86.43,"c":81.09,"h":90,"l":79.367,"t":1640494800000,"n":9048},{"v":113577,"vw":89.1454,"o":82.5,"c":90.95,"h":91,"l":82.5,"t":1641099600000,"n":3090})
+  })
 });
